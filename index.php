@@ -1,4 +1,5 @@
 <?php
+$version = 0;
 include('config/Config.php'); 
 include('function/GlobalFunctions.php'); 
 ?>
