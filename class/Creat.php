@@ -6,23 +6,23 @@ use PDO;
 use Exception;
 
 /**
- * Classe de conexão
+ * Classe Criar
  * 
  * Está classe é responsável por inserir novos registro no banco de dados MySQL
  * 
- * @param . $conn Conexão com o banco de dados
- * @param . $table Nome tabela que receberar os dados
- * @param . $data Array de dados para ser inserido, chave do array deve ter o mesmo nome da coluna
- * @param . $query Sql responsável por executar o comando
- * @param . $result Resultado da inserção de dados
+ * @param private $conn Conexão com o banco de dados
+ * @param private $table Nome tabela que receberar os dados
+ * @param private $data Array de dados para ser inserido, chave do array deve ter o mesmo nome da coluna
+ * @param private $query Sql responsável por executar o comando
+ * @param private $result Resultado da inserção de dados
  * 
- * @method . creat() Recebe o nome da tabela e array de dados. Insere um novo registro no banco de dados utilizando a biblioteca PDO 
- * @method . getResult() Retorna o parâmetro $result
- * @method . treatQuery() Auxiliar que trata a query deixando padronizado
- * @method . treatPrepare() Auxiliar que prepara a query e os dados
- * @method . treatExecute() Auxiliar que executa a query
+ * @method public creat() Recebe o nome da tabela e array de dados. Insere no banco de dados utilizando a biblioteca PDO 
+ * @method public getResult() Retorna o parâmetro $result
+ * @method private treatQuery() Auxiliar que trata a query deixando padronizado
+ * @method private treatPrepare() Auxiliar que prepara a query e os dados
+ * @method private treatExecute() Auxiliar que executa a query
  * 
- * @package Aula
+ * @package Meus códigos
  * @copyright (c) 2022, Junior Silva <junior.mothe@gmail.com>
  */
 class Creat extends Conn

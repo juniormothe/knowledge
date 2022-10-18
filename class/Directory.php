@@ -3,7 +3,17 @@
 namespace Classe;
 
 /**
- * @copyright (c) 2022, Junior Silva
+ * Classe de Diretório
+ * 
+ * Está classe é responsável por verificar se existe um diretório, caso não criar-lo
+ * 
+ * @param private $directory ...
+ * 
+ * @method private divideDirectory() ... 
+ * @method private checkDirectory() ... 
+ * 
+ * @package Meus códigos
+ * @copyright (c) 2022, Junior Silva <junior.mothe@gmail.com>
  */
 class Directory
 {

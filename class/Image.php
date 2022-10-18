@@ -5,13 +5,31 @@ namespace Classe;
 use DirectoryIterator;
 
 /**
- * @copyright (c) 2022, Junior Silva
+ * Classe de Imagem
+ * 
+ * Está classe é responsável por salvar e redimencionar imagem
+ * 
+ * @param private $image Imagem enviada por POST
+ * @param private $directory Diretorio onde será salva as imagens
+ * @param private $size Tamanho do redimencionamento 00x00
+ * 
+ * @method public save() ... 
+ * @method public listImgDirectory() ... 
+ * @method public trash() ... 
+ * @method private directory() ... 
+ * @method private divideDirectory() ... 
+ * @method private checkDirectory() ... 
+ * @method private checkSize() ... 
+ * @method private resize() ... 
+ * 
+ * @package Meus códigos
+ * @copyright (c) 2022, Junior Silva <junior.mothe@gmail.com>
  */
-class Image
+class Image       
 {
-    private $image; //Imagem enviada por POST
-    private $directory; //Diretorio onde será salva as imagens
-    private $size; //Tamanho do redimencionamento 00x00
+    private $image; 
+    private $directory; 
+    private $size; 
 
     public function save(array $image, $directory, $size = null)
     {
@@ -64,7 +82,7 @@ class Image
             $this->directory = implode('/', $directory) . "/";
         }
     }
-
+    
     private function divideDirectory()
     {
         if (strpos($this->directory, "\\") !== false) {
@@ -80,7 +98,7 @@ class Image
         }
         $this->directory = array_values($divideDirectory);
     }
-
+    
     private function checkDirectory()
     {
         $checkDirectory = (array) $this->directory;
@@ -95,12 +113,11 @@ class Image
             }
         }
     }
-
+    
     private function checkSize()
     {
         if (!empty($this->size)) {
             $size = explode('x', str_replace("X", "x", $this->size));
-
             $size['width'] = $size[0];
             if (empty($size[1])) {
                 $size['height'] = $size[0];
@@ -114,7 +131,7 @@ class Image
             $this->size = array();
         }
     }
-
+    
     private function resize($location, $type)
     {
         if (!empty($this->size)) {

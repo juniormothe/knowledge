@@ -1,6 +1,4 @@
 <?php
-require('class/Calendar.php');
-require('class/assistant/CalendarAssistant.php');
 $CalendarAssistant = new Classe\assistant\CalendarAssistant();
 $assistant = $CalendarAssistant->get();
 $weekly = $CalendarAssistant->routeWeek($assistant['week'], $assistant['year']);

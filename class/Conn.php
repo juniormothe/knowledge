@@ -8,18 +8,18 @@ use Exception;
 /**
  * Classe de conexão
  * 
- * Está classe é responsável por fazer a conexão com o banco de dados MySQL
+ * Está classe é responsável por fazer acConexão com o banco de dados MYSQL
  * 
- * @param . $host Local banco de dados
- * @param . $user Nome usuário banco de dados
- * @param . $pass Senha usuário banco de dados
- * @param . $dbName Nome do banco de dados
- * @param . $connect Conexão com o banco de dados
+ * @param private $host ...
+ * @param private $user ...
+ * @param private $pass ...
+ * @param private $dbName ...
+ * @param private $connect ...
  * 
- * @method . getConn() Retorna o parâmetro $connect
- * @method . connect() Faz a conexão com o banco de dados usando a biblioteca PDO
+ * @method public getConn() ... 
+ * @method private connect() ... 
  * 
- * @package Aula
+ * @package Meus códigos
  * @copyright (c) 2022, Junior Silva <junior.mothe@gmail.com>
  */
 class Conn

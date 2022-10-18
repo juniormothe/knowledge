@@ -1,6 +1,4 @@
 <?php
-require('class/Directory.php');
-require('class/Image.php');
 $Image = new Classe\Image();
 if (!empty($_FILES['image'])) {
     $Image->save($_FILES['image'], 'image/image', '300');
@@ -32,12 +30,12 @@ if (!empty($_POST['location'])) {
             <hr>
             <div class="row">
                 <?php foreach ($Image->listImgDirectory('image/image/') as $valueImgDirectory) { ?>
-                    <div class="col-lg-3 mb-3">
+                    <div class="col-lg-2 mb-3">
                         <div class="card">
                             <div class="card-body p-3">
                                 <table align="center">
                                     <tr>
-                                        <td height='200px'><img width='200px' src="<?php echo $valueImgDirectory; ?>"></td>
+                                        <td height='220px'><img style="max-width: 120px;" src="<?php echo $valueImgDirectory; ?>"></td>
                                     </tr>
                                     <tr>
                                         <form method="POST">

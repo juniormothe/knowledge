@@ -10,9 +10,6 @@ class Email
     public function send($dataForm, $to)
     {
         $send = $this->treatSend($dataForm, $to);
-        var_dump($send);
-
-        //mail($send['to'], $send['subject'], $send['message'], $send['header']);
     }
 
     public function sendPhpMailer($dataForm, $to)
