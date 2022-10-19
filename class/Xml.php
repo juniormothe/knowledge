@@ -7,5 +7,9 @@ namespace Classe;
  */
 class Xml
 {
-    
+    public function arrayToXml()
+    {
+
+    }
+
 }
