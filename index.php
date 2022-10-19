@@ -5,10 +5,6 @@ require('config/Autoload.php');
 //////////
 require('views/include/header.php');
 //////////
-//require('views/image/index.php');
-
-$Xml = new Classe\Xml();
-
-
+require('views/image/index.php');
 //////////
 require('views/include/footer.php');
