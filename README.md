@@ -1,2 +1,2 @@
 # knowledge
-Repository, intended for testing and new knowledge.
+Repository, for knowledge sharing.
