@@ -118,7 +118,7 @@ class Tamagotchi
     {
         if (($this->sleeping['status'] == 1) && ($time > 1800)) {
             $fileSleeping = fopen('views/tamagotchi/dataBase/sleeping.txt', 'a+');
-            $line = time() . ";1\n";
+            $line = time() . ";0\n";
             fwrite($fileSleeping, $line);
             fclose($fileSleeping);
         }
@@ -133,7 +133,6 @@ class Tamagotchi
             $_SESSION['sleepingButtonName'] = "Acordar";
             $_SESSION['gif'] = "sleep";
         } else {
-            $_SESSION['sleepingButtonName'] = "Dormir";
             if ($_SESSION['food'] > 0) {
                 $_SESSION['gif'] = "yum";
                 $_SESSION['foodButton'] = "disabled";
@@ -160,6 +159,7 @@ class Tamagotchi
                     $_SESSION['careButton'] = "disabled";
                 }
             }
+            $_SESSION['sleepingButtonName'] = "Dormir";
         }
     }
 
