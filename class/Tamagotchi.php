@@ -96,7 +96,7 @@ class Tamagotchi
 
     private function updateHungry($index)
     {
-        if (($index > 0) && ($this->hungry['value'] > 0)) {
+        if (($index > 0) && ($this->hungry['value'] > 0) && ($this->sleeping['status'] == 0)) {
             $fileHungry = fopen('views/tamagotchi/dataBase/hungry.txt', 'a+');
             $line = time() . ";" . (intval($this->hungry['value']) - $index) . "\n";
             fwrite($fileHungry, $line);
@@ -106,7 +106,7 @@ class Tamagotchi
 
     private function updateSad($index)
     {
-        if (($index > 0) && ($this->sad['value'] > 0)) {
+        if (($index > 0) && ($this->sad['value'] > 0) && ($this->sleeping['status'] == 0)) {
             $fileSad = fopen('views/tamagotchi/dataBase/sad.txt', 'a+');
             $line = time() . ";" . (intval($this->sad['value']) - $index) . "\n";
             fwrite($fileSad, $line);
