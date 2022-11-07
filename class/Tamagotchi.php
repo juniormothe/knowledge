@@ -37,6 +37,8 @@ class Tamagotchi
     {
         if ($_SESSION['sleeping']['status'] == 0) {
             $status = 1;
+            $this->updateHungry(0);
+            $this->updateSad(0);
         } else {
             $status = 0;
         }
@@ -89,14 +91,20 @@ class Tamagotchi
                 $hungryIndex = 4;
             }
         }
-        $this->updateSleeping($sleeping);
-        $this->updateHungry($hungryIndex);
-        $this->updateSad($sadIndex);
+        if ($sleeping >= 1800) {
+            $this->updateSleeping($sleeping);
+        }
+        if ($hungryIndex > 0) {
+            $this->updateHungry($hungryIndex);
+        }
+        if ($sadIndex > 0) {
+            $this->updateSad($sadIndex);
+        }
     }
 
     private function updateHungry($index)
     {
-        if (($index > 0) && ($this->hungry['value'] > 0) && ($this->sleeping['status'] == 0)) {
+        if (($this->hungry['value'] >= 0) && ($this->sleeping['status'] == 0)) {
             $fileHungry = fopen('views/tamagotchi/dataBase/hungry.txt', 'a+');
             $line = time() . ";" . (intval($this->hungry['value']) - $index) . "\n";
             fwrite($fileHungry, $line);
@@ -106,7 +114,7 @@ class Tamagotchi
 
     private function updateSad($index)
     {
-        if (($index > 0) && ($this->sad['value'] > 0) && ($this->sleeping['status'] == 0)) {
+        if (($this->sad['value'] >= 0) && ($this->sleeping['status'] == 0)) {
             $fileSad = fopen('views/tamagotchi/dataBase/sad.txt', 'a+');
             $line = time() . ";" . (intval($this->sad['value']) - $index) . "\n";
             fwrite($fileSad, $line);
@@ -121,6 +129,8 @@ class Tamagotchi
             $line = time() . ";0\n";
             fwrite($fileSleeping, $line);
             fclose($fileSleeping);
+            $this->updateHungry(0);
+            $this->updateSad(0);
         }
     }
 
@@ -133,9 +143,17 @@ class Tamagotchi
             $_SESSION['sleepingButtonName'] = "Acordar";
             $_SESSION['gif'] = "sleep";
         } else {
-            if ($_SESSION['food'] > 0) {
-                $_SESSION['gif'] = "yum";
-                $_SESSION['foodButton'] = "disabled";
+            if (($_SESSION['food'] > 0) or ($_SESSION['care'] > 0)) {
+                if ($_SESSION['food'] > 0) {
+                    $_SESSION['gif'] = "yum";
+                    $_SESSION['foodButton'] = "disabled";
+                    $_SESSION['careButton'] = "disabled";
+                }
+                if ($_SESSION['care'] > 0) {
+                    $_SESSION['gif'] = "heart-face";
+                    $_SESSION['careButton'] = "disabled";
+                    $_SESSION['foodButton'] = "disabled";
+                }
             } else {
                 if ($this->hungry['value'] < 2) {
                     $_SESSION['gif'] = "big-frown";
@@ -145,11 +163,6 @@ class Tamagotchi
                 } else {
                     $_SESSION['gif'] = "smile";
                 }
-            }
-            if ($_SESSION['care'] > 0) {
-                $_SESSION['gif'] = "heart-face";
-                $_SESSION['careButton'] = "disabled";
-            } else {
                 if ($this->sad['value'] <= 2) {
                     $_SESSION['gif'] = "rage";
                 } elseif ($this->sad['value'] <= 4) {
