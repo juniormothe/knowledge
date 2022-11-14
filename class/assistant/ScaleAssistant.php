@@ -64,7 +64,7 @@ class ScaleAssistant
 
     public function diaSemana($data)
     {
-        $diasemana = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado');
+        $diasemana = array('Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab');
         return $diasemana[date('w', strtotime($data))];
     }
 }
