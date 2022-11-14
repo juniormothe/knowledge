@@ -2,7 +2,7 @@
 session_start();
 ob_start();
 
-/*
+
 $http_https = 'http://';
 define('GETT', filter_input_array(INPUT_GET,  FILTER_DEFAULT));
 define('POSTT', filter_input_array(INPUT_POST, FILTER_DEFAULT));
@@ -15,11 +15,11 @@ define('HOST', 'localhost');
 define('PORT', '3306');
 define('USER', 'root');
 define('PASS', '');
-define('DBNAME', 'take_care');
+define('DBNAME', 'knowledge');
 define('LIMIT_PG', 15);
-*/
 
 
+/*
 $http_https = 'http://';
 define('GETT', filter_input_array(INPUT_GET,  FILTER_DEFAULT));
 define('POSTT', filter_input_array(INPUT_POST, FILTER_DEFAULT));
@@ -34,3 +34,4 @@ define('USER', 'root');
 define('PASS', '');
 define('DBNAME', 'take_care');
 define('LIMIT_PG', 15);
+*/

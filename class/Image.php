@@ -9,7 +9,7 @@ use DirectoryIterator;
  * 
  * Está classe é responsável por salvar e redimencionar imagem
  * 
- * @param private $image Imagem enviada por POST
+ * @param private $image Imagem enviada por FILE
  * @param private $directory Diretorio onde será salva as imagens
  * @param private $size Tamanho do redimencionamento 00x00
  * 

@@ -6,84 +6,79 @@ use PDO;
 use Exception;
 
 /**
- * Classe de consulta
- * 
- * Está classe é responsável por consultar informações no banco de dados MYSQL
- * 
- * @param private $conn ...
- * @param private $table ...
- * @param private $query ...
- * @param private $terms ...
- * @param private $result ...
- * 
- * @method public record() ... 
- * @method public recordAll() ... 
- * @method public getResult() ... 
- * @method private treatQuery() ... 
- * @method private treatExecute() ... 
- * @method private treatResult() ... 
- * 
- * @package Meus códigos
- * @copyright (c) 2022, Junior Silva <junior.mothe@gmail.com>
+ * @copyright (c) 2022, Junior Silva
  */
 class Read extends Conn
 {
-    private $conn;
-    private $table;
-    private $query;
-    private $terms;
-    private $result;
 
-    public function __construct()
+    private $Select;
+    private $Values;
+    private $Resultado;
+    private $Query;
+    private $Conn;
+
+    function getResultado()
     {
-        $this->conn = $this->getConn();
+        return $this->Resultado;
     }
 
-    public function record(string $table, string $terms)
+    public function exeRead($Tabela, $Termos = null, $ParseString = null)
     {
-        $this->table = (string) $table;
-        $this->terms = (string) $terms;
-        $this->treatQuery();
-        $this->treatExecute();
+        if (!empty($ParseString)) {
+            parse_str($ParseString, $this->Values);
+        }
+        $this->Select = "SELECT * FROM {$Tabela} {$Termos}";
+        $this->exeInstrucao();
     }
 
-    public function recordAll(string $query)
+    public function fullRead($Query, $ParseString = null)
     {
-        $this->query = (string) $query;
-        $this->treatQuery();
-        $this->treatExecute();
+        $this->Select = (string) $Query;
+        if (!empty($ParseString)) {
+            parse_str($ParseString, $this->Values);
+        }
+        $this->exeInstrucao();
     }
 
-    public function getResult()
+    public function viewSum($table, $column, $where = null)
     {
-        $this->treatResult();
-        return $this->result;
-    }
-
-    private function treatQuery()
-    {
-        if (!empty($this->table)) {
-            $this->query = "SELECT * FROM " . $this->table . " " . $this->terms." LIMIT 1";
+        $this->fullRead("SELECT SUM(" . $column . ") AS total FROM " . $table . " " . $where . "");
+        $viewSum = $this->getResultado();
+        if (!empty($viewSum[0]['total'])) {
+            return round($viewSum[0]['total'], 2);
+        } else {
+            return 0;
         }
     }
 
-    private function treatExecute()
+    private function exeInstrucao()
     {
-        $this->query = $this->conn->prepare($this->query);
-        $this->query->setFetchMode(PDO::FETCH_ASSOC);
-        $this->query->execute();
-        $this->result = $this->query->fetchAll();
+        $this->conexao();
+        try {
+            $this->getIntrucao();
+            $this->Query->execute();
+            $this->Resultado = $this->Query->fetchAll();
+        } catch (Exception $ex) {
+            $this->Resultado = null;
+        }
     }
 
-    private function treatResult()
+    private function conexao()
     {
-        if(!empty($this->result)){
-            if (!empty($this->table)) {
-                $this->result = $this->result[0];
+        $this->Conn = parent::getConn();
+        $this->Query = $this->Conn->prepare($this->Select);
+        $this->Query->setFetchMode(PDO::FETCH_ASSOC);
+    }
+
+    private function getIntrucao()
+    {
+        if ($this->Values) {
+            foreach ($this->Values as $Link => $Valor) {
+                if ($Link == 'limit' || $Link == 'offset') {
+                    $Valor = (int) $Valor;
+                }
+                $this->Query->bindValue(":{$Link}", $Valor, (is_int($Valor) ? PDO::PARAM_INT : PDO::PARAM_STR));
             }
-        }else{
-            $this->result = array();
         }
     }
-    
 }

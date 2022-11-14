@@ -1,49 +1,37 @@
 <?php
-
 namespace Classe;
 
 use PDO;
 use Exception;
 
 /**
- * Classe de conexão
- * 
- * Está classe é responsável por fazer acConexão com o banco de dados MYSQL
- * 
- * @param private $host ...
- * @param private $user ...
- * @param private $pass ...
- * @param private $dbName ...
- * @param private $connect ...
- * 
- * @method public getConn() ... 
- * @method private connect() ... 
- * 
- * @package Meus códigos
- * @copyright (c) 2022, Junior Silva <junior.mothe@gmail.com>
+ * @copyright (c) 2022, Junior Silva
  */
 class Conn
 {
-    private $host = "localhost";
-    private $user = "root";
-    private $pass = "";
-    private $dbName = "classes";
-    private $connect = NULL;
+
+    public  static $Host = HOST;
+    public  static $User = USER;
+    public  static $Pass = PASS;
+    public  static $Dbname = DBNAME;
+    private static $Connect = null;
+
+    private static function conectar()
+    {
+        try {
+            if(self::$Connect == null){
+                self::$Connect = new PDO('mysql:host=' . self::$Host . ';dbname=' . self::$Dbname, self::$User, self::$Pass);
+            }            
+        } catch (Exception $exc) {
+            echo 'mensagem: ' . $exc->getMessage();
+            die;
+        }
+        return self::$Connect;
+    }
 
     public function getConn()
     {
-        return $this->connect();
+        return self::conectar();
     }
 
-    private function connect()
-    {
-        try {
-            if ($this->connect == NULL) {
-                $this->connect = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->dbName, $this->user, $this->pass);
-            }
-        } catch (Exception $exc) {
-            echo 'Erro: ' . $exc->getMessage();
-            die;
-        }
-    }
 }

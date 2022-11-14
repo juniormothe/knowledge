@@ -74,6 +74,14 @@ function dateTimeBrazilianPattern($dateTime)
     return date('d/m/Y H:i:s',  strtotime($dateTime));
 }
 
+function calcutateDays($dateStart, $dateEnd)
+{
+    $dateStart = new DateTime($dateStart);
+    $dateEnd = new DateTime($dateEnd);
+    $calcutateDays = $dateStart->diff($dateEnd);
+    return $calcutateDays->days;
+}
+
 function calcutateAge($birthday)
 {
     $birthdayObject = new DateTime(date("Y-m-d", strtotime($birthday)));
