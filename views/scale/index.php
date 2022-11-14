@@ -6,8 +6,6 @@ $data['final'] = $ScaleAssistant->validarData('dataFinal', 2);
 $Calendar = new Classe\Calendar('10', '2022');
 $Scale = new Classe\Scale($data['inicial']);
 $listaId = $Scale->getListaId();
-//
-echo calcutateDays($data['inicial'], $data['final']);
 
 ?>
 <div class="container">
@@ -40,7 +38,12 @@ echo calcutateDays($data['inicial'], $data['final']);
                     <tr>
                         <td align="center"><?php echo date('d/m/Y', strtotime($dataExibir)); ?></td>
                         <td align="center"><?php echo $ScaleAssistant->diaSemana($dataExibir); ?></td>
-                        <td align="center"></td>
+                        <td align="center">
+                            <?php 
+                            googleIcon('e7fd', 'xs'); 
+                            echo " ".$Scale->verificarEscala($dataExibir);
+                            ?>
+                        </td>
                     </tr>
                 <?php
                     $dataExibir = date('Y-m-d', strtotime('+1 days', strtotime($dataExibir)));
