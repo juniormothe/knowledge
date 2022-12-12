@@ -12,7 +12,7 @@ $Calendar = new Classe\Calendar($assistant['month'], $assistant['year']);
         <td style="width: 14%;" align="center"><b>Sábado</b></td>
     </tr>
     <?php
-    foreach ($Calendar->fullCalendar() as $valueCalendar) {
+    foreach ($Calendar->fullCalendar() as $valueCalendar) :
     ?>
         <tr>
             <td <?php echo $CalendarAssistant->actionDay($valueCalendar[0]); ?> title="<?php echo date('d/m/Y', strtotime($valueCalendar[0])) ?>" align="center">
@@ -38,6 +38,6 @@ $Calendar = new Classe\Calendar($assistant['month'], $assistant['year']);
             </td>
         </tr>
     <?php
-    }
+    endforeach;
     ?>
 </table>
