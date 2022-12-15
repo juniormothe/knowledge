@@ -44,13 +44,19 @@ $weekly = $CalendarAssistant->routeWeek($assistant['week'], $assistant['year']);
                             <table>
                                 <tr>
                                     <td>
-                                        <a class="btn btn-outline-secondary btn-sm" href="?type=<?php echo $assistant['type']; ?>&week=<?php echo $weekly['previous']; ?>&year=<?php echo $weekly['yearPrevious']; ?>" role="button"><?php googleIcon('e5c4', 'xs'); ?></a>
+                                        <a class="btn btn-outline-secondary btn-sm" href="?type=<?php echo $assistant['type']; ?>&week=<?php echo $weekly['previous']; ?>&year=<?php echo $weekly['yearPrevious']; ?>" role="button">
+                                            <?php googleIcon('e5c4', 'xs'); ?>
+                                        </a>
                                     </td>
                                     <td>
-                                        <a class="btn btn-outline-secondary btn-sm disabled" href="#" role="button"><?php echo "SEMANA: " . $assistant['week']; ?></a>
+                                        <a class="btn btn-outline-secondary btn-sm disabled" href="#" role="button">
+                                            <?php echo "SEMANA: " . $assistant['week']; ?>
+                                        </a>
                                     </td>
                                     <td>
-                                        <a class="btn btn-outline-secondary btn-sm" href="?type=<?php echo $assistant['type']; ?>&week=<?php echo $weekly['next']; ?>&year=<?php echo $weekly['yearNext']; ?>" role="button"><?php googleIcon('e5c8', 'xs'); ?></a>
+                                        <a class="btn btn-outline-secondary btn-sm" href="?type=<?php echo $assistant['type']; ?>&week=<?php echo $weekly['next']; ?>&year=<?php echo $weekly['yearNext']; ?>" role="button">
+                                            <?php googleIcon('e5c8', 'xs'); ?>
+                                        </a>
                                     </td>
                                 </tr>
                             </table>

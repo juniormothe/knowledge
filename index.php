@@ -5,6 +5,6 @@ require('config/Autoload.php');
 //////////
 require('views/include/header.php');
 //////////
-require('views/form/index.php');
+//require('views/form/index.php');
 //////////
 require('views/include/footer.php');
