@@ -12,7 +12,7 @@ $weekly = $CalendarAssistant->routeWeek($assistant['week'], $assistant['year']);
                     <?php if ($assistant['type'] == 1) { ?>
                         <form>
                             <input type="hidden" name="type" value="<?php echo $assistant['type']; ?>">
-                            <table>
+                            <table > 
                                 <tr>
                                     <td>
                                         <select class="form-control form-control-sm" name="month">
