@@ -1,0 +1,22 @@
+header.playload.signature
+
+header
+{
+    "typ":"JWT",                //tipo de token
+    "alg":"HS256"               //tipo de encriptação
+}
+base64(header);
+
+playload
+{
+    "iss":"meusite.com.br",     //dominio que gerou o token 
+    "exp":1211244121111441,     //data quando vence em segundos (opicional)
+    "iat":1211244121111441,     //dominio quando foi criado em segundos (opicional)
+    "jti":"hioahohaoiayiu",     //identificador da base de dados (opicional)
+    "id_user":12,               //informações do usuario id, permições e etc, pode ser um array
+    "seg_int":"aiuhgiugag"      //segurança interna da sua preferencia (opicional)
+}
+base64(playload);
+
+signature
+HS256( base64(header) . base64(playload) . chave secreta 256bit  (salva no servidor) )
