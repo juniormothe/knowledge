@@ -1,4 +1,6 @@
 <?php
+/*
+
 require 'jwt/jwt.php';
 
 $jwt = new jwt();
@@ -32,3 +34,7 @@ print_r($jason);
 echo "<hr>";
 
 echo $_SERVER['HTTP_HOST'];
+
+*/
+
+require 'json-web-token/JWT.php';

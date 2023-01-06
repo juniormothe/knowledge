@@ -1,0 +1,20 @@
+{
+    "description": "framework",
+    "authors": [
+        {
+            "name": "Junior Silva",
+            "email": "junior.mothe@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app",
+            "Core\\": "core"
+        }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.5",
+        "imangazaliev/didom": "^2.0",
+        "dompdf/dompdf": "^2.0"
+    }
+}
