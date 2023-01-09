@@ -33,9 +33,6 @@ class ConfigController
             $this->urlMetodo = "index";
             $this->urlIdentificador = "";
         }
-        define('MENU', strtolower($this->urlController));
-        define('MENU_CONTENT', strtolower($this->urlMetodo));
-        define('VIEW', $this->urlIdentificador);
     }
 
     public function loadPage()
