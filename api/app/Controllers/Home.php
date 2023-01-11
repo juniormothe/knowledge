@@ -9,11 +9,8 @@ use Core\Controller;
  */
 class Home extends Controller
 {
-    private $dados;
-
     public function index()
     {
-        $array = ['name' => 'junior', 'idade' => '37'];
-        $this->retunJson($array);
+        
     }
 }

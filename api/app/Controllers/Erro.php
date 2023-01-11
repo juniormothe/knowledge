@@ -9,8 +9,6 @@ use Core\Controller;
  */
 class Erro extends Controller
 {
-    private $dados;
-
     public function index()
     {
         $this->retunJson(array());
