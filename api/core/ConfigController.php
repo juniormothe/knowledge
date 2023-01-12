@@ -36,6 +36,9 @@ class ConfigController
             $this->urlMetodo = "index";
             $this->urlIdentificador = "";
         }
+        define('CONTROLLER', $this->urlController);
+        define('METHOD', $this->urlMetodo);
+        define('IDENTIFIER', $this->urlIdentificador);
     }
 
     public function loadPage()

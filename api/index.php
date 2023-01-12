@@ -1,6 +1,5 @@
 <?php
 session_start();
-ob_start();
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: *");

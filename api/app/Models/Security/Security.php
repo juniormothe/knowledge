@@ -2,10 +2,6 @@
 
 namespace App\Models\Security;
 
-if (!defined('URL')) {
-    header("Location: ../../../Erro");
-    exit();
-}
 /**
  * @copyright (c) 2022, Junior Silva
  */

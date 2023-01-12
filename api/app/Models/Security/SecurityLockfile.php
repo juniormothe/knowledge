@@ -14,9 +14,6 @@ class SecurityLockfile
 
     private function lockedFile()
     {
-        if (!defined('URL')) {
-            header("Location: ../../../Erro");
-            exit();
-        }
+        
     }
 }
