@@ -41,6 +41,7 @@ class Users extends Controller
     {
         $array = array();
         $array['error'] = NULL;
+        $array['jwt'] = NULL;
         $method = $this->getMethod();
         $data = $this->getRequestData();
         if ($method <> "POST") {
@@ -53,8 +54,9 @@ class Users extends Controller
                     if ($read->getResultado()) {
                         $array['error'] = 'email is in use';
                     } else {
+                        $data['avatar'] = ($_FILES['avatar'] ? $_FILES['avatar'] : NULL);
                         $Users = new \App\Models\Users\Users();
-                        $Users->createUser($data['name'], $data['email'], $data['pass']);
+                        $Users->createUser($data['name'], $data['email'], $data['pass'], $data['avatar']);
                         $array['jwt'] = $Users->createJwt();
                     }
                 } else {
@@ -71,7 +73,8 @@ class Users extends Controller
     {
         $array = array();
         $array['error'] = NULL;
-        $array['logged'] = FALSE;
+        $array['validation'] = FALSE;
+        $array['data'] = NULL;
         $method = $this->getMethod();
         $data = $this->getRequestData();
         if ($method <> "GET") {
@@ -80,8 +83,86 @@ class Users extends Controller
             if (!empty($data['token'])) {
                 $Users = new \App\Models\Users\Users();
                 if ($Users->getInfo($data['token'])) {
-                    $array['logged'] = TRUE;
+                    $array['validation'] = TRUE;
                     $array['data'] = $Users->getInfo($data['token']);
+                } else {
+                    $array['error'] = 'invalid token';
+                }
+            } else {
+                $array['error'] = 'token not sent';
+            }
+        }
+        $this->retunJson($array);
+    }
+
+    public function photos()
+    {
+        $array = array();
+        $array['error'] = NULL;
+        $array['validation'] = FALSE;
+        $array['data'] = NULL;
+        $method = $this->getMethod();
+        $data = $this->getRequestData();
+        if ($method <> "GET") {
+            $array['error'] = 'incorrect method';
+        } else {
+            if (!empty($data['token'])) {
+                $Users = new \App\Models\Users\Users();
+                if ($Users->listPhotos($data['token'])) {
+                    $array['validation'] = TRUE;
+                    $array['data'] = $Users->listPhotos($data['token']);
+                } else {
+                    $array['error'] = 'invalid token';
+                }
+            } else {
+                $array['error'] = 'token not sent';
+            }
+        }
+        $this->retunJson($array);
+    }
+
+    public function following($token)
+    {
+        $array = array();
+        $array['error'] = NULL;
+        $array['validation'] = FALSE;
+        $array['data'] = NULL;
+        $method = $this->getMethod();
+        $data = $this->getRequestData();
+        if ($method <> "GET") {
+            $array['error'] = 'incorrect method';
+        } else {
+            if (!empty($data['token'])) {
+                $Users = new \App\Models\Users\Users();
+                if ($Users->following($data['token'])) {
+                    $array['validation'] = TRUE;
+                    $array['data'] = $Users->following($data['token']);
+                } else {
+                    $array['error'] = 'invalid token';
+                }
+            } else {
+                $array['error'] = 'token not sent';
+            }
+        }
+        $this->retunJson($array);
+    }
+
+    public function followers($token)
+    {
+        $array = array();
+        $array['error'] = NULL;
+        $array['validation'] = FALSE;
+        $array['data'] = NULL;
+        $method = $this->getMethod();
+        $data = $this->getRequestData();
+        if ($method <> "GET") {
+            $array['error'] = 'incorrect method';
+        } else {
+            if (!empty($data['token'])) {
+                $Users = new \App\Models\Users\Users();
+                if ($Users->followers($data['token'])) {
+                    $array['validation'] = TRUE;
+                    $array['data'] = $Users->followers($data['token']);
                 } else {
                     $array['error'] = 'invalid token';
                 }
@@ -96,7 +177,7 @@ class Users extends Controller
     {
         $array = array();
         $array['error'] = NULL;
-        $array['logged'] = FALSE;
+        $array['validation'] = FALSE;
         $method = $this->getMethod();
         $data = $this->getRequestData();
         if ($method <> "PUT") {
@@ -115,9 +196,101 @@ class Users extends Controller
                 }
                 if ($Users->updateInfo($data['token'], $data['name'], $data['email'], $data['pass'])) {
                     $array['error'] = $Users->updateInfo($data['token'], $data['name'], $data['email'], $data['pass']);
-                    $array['logged'] = TRUE;
+                    if ($array['error']) {
+                        $array['error'] = NULL;
+                    }
+                    $array['validation'] = TRUE;
                 } else {
                     $array['error'] = 'invalid token';
+                }
+            } else {
+                $array['error'] = 'token not sent';
+            }
+        }
+        $this->retunJson($array);
+    }
+
+    public function avatar()
+    {
+        $array = array();
+        $array['error'] = NULL;
+        $array['validation'] = FALSE;
+        $method = $this->getMethod();
+        $data = $this->getRequestData();
+        if ($method <> "POST") {
+            $array['error'] = 'incorrect method';
+        } else {
+            if (!empty($data['token'])) {
+                $avatar = ($_FILES['avatar'] ? $_FILES['avatar'] : NULL);
+                if (empty($avatar)) {
+                    $array['error'] = 'image not sent';
+                } else {
+                    if ((isset($avatar['size'])) && ($avatar['size'] > 0)) {
+                        $Users = new \App\Models\Users\Users();
+                        if ($Users->updateAvatar($data['token'], $avatar)) {
+                            $array['validation'] = TRUE;
+                        } else {
+                            $array['error'] = 'invalid token';
+                        }
+                    } else {
+                        $array['error'] = 'image not sent';
+                    }
+                }
+            } else {
+                $array['error'] = 'token not sent';
+            }
+        }
+        $this->retunJson($array);
+    }
+
+    public function follow($token)
+    {
+        $array = array();
+        $array['error'] = NULL;
+        $array['validation'] = FALSE;
+        $method = $this->getMethod();
+        $data = $this->getRequestData();
+        if ($method <> "POST") {
+            $array['error'] = 'incorrect method';
+        } else {
+            if (!empty($data['token'])) {
+                if (!empty($data['id_user'])) {
+                    $Users = new \App\Models\Users\Users();
+                    if ($Users->follow($data['token'], $data['id_user'])) {
+                        $array['validation'] = TRUE;
+                    } else {
+                        $array['error'] = 'invalid token';
+                    }
+                } else {
+                    $array['error'] = 'id_user not sent';
+                }
+            } else {
+                $array['error'] = 'token not sent';
+            }
+        }
+        $this->retunJson($array);
+    }
+
+    public function unfollow($token)
+    {
+        $array = array();
+        $array['error'] = NULL;
+        $array['validation'] = FALSE;
+        $method = $this->getMethod();
+        $data = $this->getRequestData();
+        if ($method <> "POST") {
+            $array['error'] = 'incorrect method';
+        } else {
+            if (!empty($data['token'])) {
+                if (!empty($data['id_user'])) {
+                    $Users = new \App\Models\Users\Users();
+                    if ($Users->unfollow($data['token'], $data['id_user'])) {
+                        $array['validation'] = TRUE;
+                    } else {
+                        $array['error'] = 'invalid token';
+                    }
+                } else {
+                    $array['error'] = 'id_user not sent';
                 }
             } else {
                 $array['error'] = 'token not sent';
@@ -130,7 +303,7 @@ class Users extends Controller
     {
         $array = array();
         $array['error'] = NULL;
-        $array['logged'] = FALSE;
+        $array['validation'] = FALSE;
         $method = $this->getMethod();
         $data = $this->getRequestData();
         if ($method <> "DELETE") {
@@ -139,7 +312,7 @@ class Users extends Controller
             if (!empty($data['token'])) {
                 $Users = new \App\Models\Users\Users();
                 if ($Users->deleteUser($data['token'])) {
-                    $array['logged'] = TRUE;
+                    $array['validation'] = TRUE;
                 } else {
                     $array['error'] = 'invalid token';
                 }
@@ -149,4 +322,5 @@ class Users extends Controller
         }
         $this->retunJson($array);
     }
+
 }

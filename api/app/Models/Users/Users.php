@@ -32,12 +32,23 @@ class Users
         }
     }
 
-    public function createUser($name, $email, $pass)
+    public function createUser($name, $email, $pass, $avatar)
     {
         $Create = new \App\Models\Helpers\Create();
         $Create->exeCreate("users", ['name' => $name, 'email' => $email, 'pass' => md5($pass)]);
         if ($Create->getResultado()) {
             $this->idUser = $Create->getResultado();
+            if (!empty($avatar)) {
+                if ((isset($avatar['size'])) && ($avatar['size'] > 0)) {
+                    $extension = explode('/', $avatar['type']);
+                    $name = md5(time() . rand(0, 99)) . "." . $extension[1];
+                    $UploadImgRed = new \App\Models\Helpers\UploadImgRed();
+                    $UploadImgRed->uploadImagem($avatar, "media/avatar/" . $this->idUser . "/", $name, 150, 150);
+                    if (file_exists("media/avatar/" . $this->idUser . "/" . $name)) {
+                        self::$crud->update("users", ['avatar' => $name], "WHERE (id='" . $this->idUser . "')");
+                    }
+                }
+            }
             return TRUE;
         } else {
             return FALSE;
@@ -70,7 +81,6 @@ class Users
             if ((empty($name)) && (empty($email)) && (empty($pass))) {
                 return 'update data not sent';
             } else {
-
                 if (!empty($email)) {
                     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                         $read = new \App\Models\Helpers\Read();
@@ -109,6 +119,33 @@ class Users
         }
     }
 
+    public function updateAvatar($token, $avatar)
+    {
+        $data = $this->validateJwt($token);
+        if (isset($data['id'])) {
+            if (empty($avatar)) {
+                return 'image not sent';
+            } else {
+                if ((isset($avatar['size'])) && ($avatar['size'] > 0)) {
+                    $extension = explode('/', $avatar['type']);
+                    $name = md5(time() . rand(0, 99)) . "." . $extension[1];
+                    $UploadImgRed = new \App\Models\Helpers\UploadImgRed();
+                    $UploadImgRed->uploadImagem($avatar, "media/avatar/" . $data['id'] . "/", $name, 150, 150);
+                    if (file_exists("media/avatar/" . $data['id'] . "/" . $name)) {
+                        self::$crud->update("users", ['avatar' => $name], "WHERE (id='" . $data['id'] . "')");
+                        return TRUE;
+                    } else {
+                        return FALSE;
+                    }
+                } else {
+                    return FALSE;
+                }
+            }
+        } else {
+            return FALSE;
+        }
+    }
+
     public function deleteUser($token)
     {
         $data = $this->validateJwt($token);
@@ -120,6 +157,97 @@ class Users
             self::$crud->delete("users_following", "WHERE (id_user_passive='" . $data['id'] . "')");
             self::$crud->delete("users", "WHERE (id='" . $data['id'] . "')");
             return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function listPhotos($token)
+    {
+        $data = $this->validateJwt($token);
+        if (isset($data['id'])) {
+            $read = new \App\Models\Helpers\Read();
+            $read->exeRead("photos", "WHERE (id_user='" . $data['id'] . "')");
+            if ($read->getResultado()) {
+                $dataPhotos = array();
+                foreach ($read->getResultado() as $value) {
+                    $dataPhotos[] = [
+                        'id' => $value['id'],
+                        'url' => PHOTOS . $data['id'] . '/' . $value['url'],
+                        'comments' => $read->viewCount("photos_comments", "id", "WHERE (id_photo='" . $value['id'] . "')"),
+                        'likes' => $read->viewCount("photos_likes", "id", "WHERE (id_photo='" . $value['id'] . "')")
+                    ];
+                }
+                return $dataPhotos;
+            } else {
+                return FALSE;
+            }
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function follow($token, $id)
+    {
+        $data = $this->validateJwt($token);
+        if (isset($data['id'])) {
+            $read = new \App\Models\Helpers\Read();
+            $read->exeRead("users", "WHERE (id='" . $id . "')");
+            if ($read->getResultado()) {
+                $read->exeRead("users_following", "WHERE (id_user_active='" . $data['id'] . "') AND (id_user_passive='" . $id . "')");
+                if (empty($read->getResultado())) {
+                    $Create = new \App\Models\Helpers\Create();
+                    $Create->exeCreate("users_following", ['id_user_active' => $data['id'], 'id_user_passive' => $id]);
+                }
+            }
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function unfollow($token, $id)
+    {
+        $data = $this->validateJwt($token);
+        if (isset($data['id'])) {
+            self::$crud->delete("users_following", "WHERE (id_user_active='" . $data['id'] . "') AND (id_user_passive='" . $id . "')");
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function following($token)
+    {
+        $data = $this->validateJwt($token);
+        if (isset($data['id'])) {
+            $following = array();
+            $read = new \App\Models\Helpers\Read();
+            $read->exeRead("users_following", "WHERE (id_user_active='" . $data['id'] . "')");
+            foreach ($read->getResultado() as $value) {
+                $read->exeRead("users", "WHERE (id='" . $value['id_user_passive'] . "')");
+                $user = $read->getResultado();
+                $following[] = ['id' => $user[0]['id'], 'name' => $user[0]['name']];
+            }
+            return $following;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function followers($token)
+    {
+        $data = $this->validateJwt($token);
+        if (isset($data['id'])) {
+            $followers = array();
+            $read = new \App\Models\Helpers\Read();
+            $read->exeRead("users_following", "WHERE (id_user_passive='" . $data['id'] . "')");
+            foreach ($read->getResultado() as $value) {
+                $read->exeRead("users", "WHERE (id='" . $value['id_user_active'] . "')");
+                $user = $read->getResultado();
+                $followers[] = ['id' => $user[0]['id'], 'name' => $user[0]['name']];
+            }
+            return $followers;
         } else {
             return FALSE;
         }

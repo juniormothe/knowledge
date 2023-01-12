@@ -4,7 +4,7 @@ namespace App\Models\jwt\security;
 
 class key
 {
-    public static $securitykey = 'securitykey.json';
+    public static $securitykey = 'core/securitykey.json';
 
     public function securitykey(int $type)
     {

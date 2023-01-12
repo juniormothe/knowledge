@@ -2,23 +2,60 @@
 global $routes;
 $routes = array();
 
-$routes['/users/login'] = '/users/login'; 
+// method POST
+// parameters (email, pass)
+$routes['/users/login'] = '/users/login';
+
+// method POST
+// parameters (name, email, pass)
 $routes['/users/new'] = '/users/new';
-$routes['/users/view'] = '/users/view'; // add parameter token
-$routes['/users/update'] = '/users/update'; // add parameter token
-$routes['/users/delete'] = '/users/delete';  // add parameter token
-$routes['/users/feed'] = '/users/feed';  // add parameter token
-$routes['/users/photos'] = '/users/photos';  // add parameter token
-$routes['/users/follow'] = '/users/follow';  // add parameter token
 
-$routes['/photos/random'] = '/photos/random';
-$routes['/photos/new'] = '/photos/new'; // add parameter token
-$routes['/photos/view'] = '/photos/view'; // add parameter token
-$routes['/photos/comment'] = '/photos/comment'; // add parameter token
-$routes['/photos/like'] = '/photos/like'; // add parameter token
+// method GET
+// parameters (token)
+$routes['/users/view'] = '/users/view';
 
+// method PUT
+// parameters (token, [name, email, pass])
+$routes['/users/update'] = '/users/update';
 
+// method POST
+// parameters (token, [avatar=image_file])
+$routes['/users/avatar'] = '/users/avatar';
 
-/**
-* eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF91c2VyIjoiNSIsImlzcyI6ImxvY2FsaG9zdCIsImlhdCI6MTY3MzQ3ODAwMCwia2V5X3JlZmVyZW5jZSI6MX0.FsyGA-jAq46sUtQ57AMXXCaaLV73vebSpCl54Agc-S8
-*/
+// method DELETE
+// parameters (token)
+$routes['/users/delete'] = '/users/delete';
+
+// method GET
+// parameters (token)
+$routes['/users/photos'] = '/users/photos';
+
+// method POST
+// parameters (token, [id_user])
+$routes['/users/follow'] = '/users/follow';
+
+// method POST
+// parameters (token, [id_user])
+$routes['/users/unfollow'] = '/users/unfollow';
+
+// method GET
+// parameters (token)
+$routes['/users/following'] = '/users/following';
+
+// method GET
+// parameters (token)
+$routes['/users/followers'] = '/users/followers';
+
+// method POST
+// parameters (token, [photo=image_file])
+$routes['/photos/new'] = '/photos/new';
+
+$routes['/photos/comment'] = '/photos/comment';
+
+$routes['/photos/comment'] = '/photos/uncomment';
+
+$routes['/photos/like'] = '/photos/like';
+
+$routes['/photos/unlike'] = '/photos/unlike';
+
+$routes['/users/feed'] = '/users/feed';
