@@ -50,6 +50,8 @@ $routes['/users/followers'] = '/users/followers';
 // parameters (token, [photo=image_file])
 $routes['/photos/new'] = '/photos/new';
 
+$routes['/photos/view'] = '/photos/view';
+
 $routes['/photos/comment'] = '/photos/comment';
 
 $routes['/photos/comment'] = '/photos/uncomment';
