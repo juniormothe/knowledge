@@ -50,6 +50,8 @@ $routes['/users/followers'] = '/users/followers';
 // parameters (token, [photo=image_file])
 $routes['/photos/new'] = '/photos/new';
 
+// method GET
+// parameters (token, [id])
 $routes['/photos/view'] = '/photos/view';
 
 $routes['/photos/comment'] = '/photos/comment';

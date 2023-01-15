@@ -41,5 +41,20 @@ class Photos extends Controller
         $this->retunJson($array);
     }
 
+    public function view()
+    {
+        $array = array();
+        $array['error'] = NULL;
+        $array['validation'] = FALSE;
+        $method = $this->getMethod();
+        $data = $this->getRequestData();
+        if ($method <> "GET") {
+            $array['error'] = 'incorrect method';
+        } else {
+            
+        }
+        $this->retunJson($array);
+    }
+
 
 }
