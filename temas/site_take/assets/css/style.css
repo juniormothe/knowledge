@@ -3771,6 +3771,7 @@ footer css
 
 .footer-area .widget-wrapper {
   position: relative;
+  width: 100%;
   z-index: 1;
 }
 
